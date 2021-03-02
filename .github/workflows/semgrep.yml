@@ -68,9 +68,6 @@ jobs:
           name: Semgrep report in TXT
           path: semgrep.txt
 
-
-
-# TODO: This only works if you have opted in to CodeQL Scanning. But if you do this, then it will upload the results to the security alerts tab!!! Super cool.
       - name: Upload SARIF file to CodeQL Action?
         uses: github/codeql-action/upload-sarif@v1
         if: ${{ always() }}
@@ -78,9 +75,3 @@ jobs:
           # Path to SARIF file relative to the root of the repository
           sarif_file: semgrep.sarif
           
-#      - name: Semgrep
-#        id: semgrep
-#        uses: returntocorp/semgrep-action@v1
-#        with:
-#          config: p/r2c
-#          generateSarif: 1
