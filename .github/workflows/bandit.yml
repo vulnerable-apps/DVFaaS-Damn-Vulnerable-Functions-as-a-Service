@@ -1,0 +1,34 @@
+name: bandit
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  bandit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.6.10' ]
+    name: Python ${{ matrix.python-version }} ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Python security check using Bandit and output as JSON
+        uses: kmcquade/bandit-report-artifacts-json@0.0.2
+        with:
+          python_version: ${{ matrix.python-version }}
+          project_path: .
+          ignore_failure: false
+
+      - name: Security check report artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: Security report
+          path: output/
